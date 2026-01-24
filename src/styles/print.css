@@ -1,0 +1,158 @@
+/**
+ * @fileoverview Estilos específicos para impresión y generación de PDF.
+ * Importado en index.css para mantener separación de responsabilidades.
+ * @module styles/print
+ */
+
+/* ========================================
+   Configuración de página A4
+   ======================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  /* Forzar colores exactos en impresión */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Configuración base del documento */
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: white !important;
+  }
+
+  /* ========================================
+     Clases de visibilidad para impresión
+     ======================================== */
+  
+  /* Ocultar elementos que no deben imprimirse */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Mostrar elementos solo para impresión */
+  .print-only {
+    display: block !important;
+  }
+
+  /* ========================================
+     Panel del formulario (ocultar)
+     ======================================== */
+  .form-panel {
+    display: none !important;
+  }
+
+  /* ========================================
+     Panel de vista previa (mostrar)
+     ======================================== */
+  .preview-panel {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    display: block !important;
+    overflow: hidden !important;
+  }
+
+  .preview-content {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    background: white !important;
+    overflow: hidden !important;
+  }
+
+  .a4-viewport {
+    display: block !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* ========================================
+     Contenedor A4 para impresión
+     ======================================== */
+  .a4-container {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: none !important;
+    max-height: none !important;
+    transform: none !important;
+    transform-origin: top left !important;
+    box-shadow: none !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* ========================================
+     Contenedor principal
+     ======================================== */
+  .app-container {
+    display: block !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* ========================================
+     Ficha técnica
+     ======================================== */
+  .tech-sheet {
+    width: 210mm !important;
+    height: 297mm !important;
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .tech-sheet-header,
+  .tech-sheet-top-section,
+  .tech-sheet-main-section,
+  .tech-sheet-footer {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* ========================================
+     Ajustes de contenido para impresión
+     ======================================== */
+  
+  /* Forzar fondos y colores */
+  .tech-sheet-header,
+  .tech-sheet-footer,
+  .tech-param-cell,
+  .tech-allergens-inline,
+  .tech-conservation,
+  .tech-procedure-number,
+  .tech-notes {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

@@ -1,0 +1,457 @@
+/**
+ * @fileoverview Estilos específicos para modo móvil
+ * Importado en index.css para mantener separación de responsabilidades.
+ * @module styles/mobile
+ */
+
+/* ========================================
+   1. Layout Móvil - Contenedor Principal
+   ======================================== */
+@layer components {
+  /* Contenedor móvil - Formulario fullscreen */
+  .mobile-container {
+    @apply h-screen w-screen overflow-hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--mokka-ink);
+    position: relative;
+  }
+
+  /* En móvil, el panel de formulario ocupa 100% */
+  .mobile-container .form-panel {
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+  }
+
+  /* ========================================
+     2. Floating Action Button (FAB) - Speed Dial
+     ======================================== */
+  
+  /* Contenedor del FAB */
+  .mobile-fab-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  /* Botón FAB principal */
+  .mobile-fab {
+    @apply flex items-center justify-center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--mokka-charcoal) 0%, var(--mokka-ink) 100%);
+    border: 1px solid var(--mokka-slate);
+    box-shadow: 
+      0 4px 14px -3px rgba(0, 0, 0, 0.3),
+      0 8px 20px -6px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-fab:hover {
+    transform: scale(1.05);
+    box-shadow: 
+      0 6px 20px -4px rgba(0, 0, 0, 0.35),
+      0 12px 28px -8px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-fab:active {
+    transform: scale(0.95);
+  }
+
+  /* FAB expandido */
+  .mobile-fab-expanded {
+    background: linear-gradient(135deg, var(--mokka-slate) 0%, var(--mokka-charcoal) 100%);
+    border-color: var(--mokka-sage);
+  }
+
+  /* Icono del FAB con animación de rotación */
+  .mobile-fab-icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-fab-expanded .mobile-fab-icon {
+    transform: rotate(45deg);
+  }
+
+  /* Acciones del Speed Dial */
+  .mobile-fab-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-fab-actions-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  /* Botón de acción individual */
+  .mobile-fab-action {
+    @apply flex items-center gap-3;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(45, 54, 57, 0.95);
+    border: 1px solid rgba(177, 196, 193, 0.3);
+    box-shadow: 
+      0 4px 12px -2px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    white-space: nowrap;
+  }
+
+  .mobile-fab-action:hover {
+    background: rgba(75, 88, 93, 0.95);
+    border-color: var(--mokka-sage);
+    transform: translateX(-4px);
+  }
+
+  .mobile-fab-action:active {
+    transform: translateX(-2px) scale(0.98);
+  }
+
+  .mobile-fab-action-icon {
+    @apply flex items-center justify-center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--mokka-charcoal) 0%, var(--mokka-ink) 100%);
+    flex-shrink: 0;
+  }
+
+  .mobile-fab-action-label {
+    @apply text-sm font-semibold;
+    color: var(--mokka-paper);
+  }
+
+  /* Variantes de color para acciones */
+  .mobile-fab-action-preview .mobile-fab-action-icon {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  }
+
+  .mobile-fab-action-share .mobile-fab-action-icon {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  }
+
+  /* Backdrop oscuro cuando el FAB está expandido */
+  .mobile-fab-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+    backdrop-filter: blur(2px);
+  }
+
+  .mobile-fab-backdrop-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ========================================
+     3. Modal de Vista Previa Móvil - Simplificado
+     ======================================== */
+  
+  .mobile-preview-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-preview-modal-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Header del modal - Compacto */
+  .mobile-preview-header {
+    @apply flex items-center justify-between px-3;
+    height: 48px;
+    background: var(--mokka-ink);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  /* Botón volver */
+  .mobile-preview-back {
+    @apply flex items-center gap-2;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--mokka-sage);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+
+  .mobile-preview-back:hover,
+  .mobile-preview-back:active {
+    background: rgba(177, 196, 193, 0.1);
+    color: white;
+  }
+
+  .mobile-preview-title {
+    @apply text-xs font-bold uppercase tracking-wider;
+    color: var(--mokka-steel);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Botón compartir en header */
+  .mobile-preview-share {
+    @apply flex items-center justify-center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--mokka-sage);
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+
+  .mobile-preview-share:hover,
+  .mobile-preview-share:active {
+    background: rgba(177, 196, 193, 0.1);
+    color: white;
+  }
+
+  /* ========================================
+     Contenido del modal - DOCUMENTO FULL WIDTH
+     ======================================== */
+  .mobile-preview-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: white;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Contenedor del documento */
+  .mobile-preview-document {
+    width: 100%;
+  }
+
+  /* A4 en modal móvil - Ocupar todo el ancho */
+  .mobile-preview-document .a4-container {
+    /* Anular dimensiones fijas del A4 desktop */
+    width: 100% !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  /* La ficha técnica dentro del A4 */
+  .mobile-preview-document .tech-sheet {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+  }
+
+  /* Ajustar header de la ficha */
+  .mobile-preview-document .tech-sheet-header {
+    padding: 12px 16px;
+  }
+
+  .mobile-preview-document .tech-sheet-logo {
+    height: 40px;
+  }
+
+  .mobile-preview-document .tech-sheet-title {
+    font-size: 14px;
+  }
+
+  .mobile-preview-document .tech-sheet-category {
+    font-size: 9px;
+  }
+
+  /* Ajustar sección superior */
+  .mobile-preview-document .tech-sheet-top-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .mobile-preview-document .tech-sheet-image-container {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    aspect-ratio: 1/1;
+    min-height: auto;
+  }
+
+  .mobile-preview-document .tech-sheet-params-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .mobile-preview-document .tech-param-cell {
+    padding: 8px;
+    min-height: auto;
+  }
+
+  .mobile-preview-document .tech-param-label {
+    font-size: 7px;
+    margin-bottom: 4px;
+  }
+
+  .mobile-preview-document .tech-param-value {
+    font-size: 12px;
+  }
+
+  /* Alérgenos y conservación en columna */
+  .mobile-preview-document .tech-allergens-inline {
+    grid-column: auto;
+    grid-row: auto;
+    padding: 10px;
+  }
+
+  .mobile-preview-document .tech-conservation {
+    grid-column: auto;
+    grid-row: auto;
+    padding: 10px;
+  }
+
+  .mobile-preview-document .tech-allergens-header,
+  .mobile-preview-document .tech-conservation-header {
+    font-size: 8px;
+    margin-bottom: 6px;
+  }
+
+  .mobile-preview-document .tech-allergen-chip-full {
+    font-size: 8px;
+    padding: 4px 6px;
+  }
+
+  .mobile-preview-document .tech-conservation-value {
+    font-size: 11px;
+  }
+
+  /* Sección principal - Stack vertical en móvil */
+  .mobile-preview-document .tech-sheet-main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    grid-template-columns: none;
+  }
+
+  .mobile-preview-document .tech-ingredients-column,
+  .mobile-preview-document .tech-procedure-column {
+    width: 100%;
+  }
+
+  .mobile-preview-document .tech-section-title {
+    font-size: 11px;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .mobile-preview-document .tech-ingredient-item {
+    font-size: 11px;
+    padding: 4px 0;
+  }
+
+  .mobile-preview-document .tech-ingredient-qty {
+    width: 50px;
+    font-size: 10px;
+  }
+
+  .mobile-preview-document .tech-procedure-item {
+    font-size: 11px;
+  }
+
+  .mobile-preview-document .tech-procedure-number {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+
+  /* Notas del chef */
+  .mobile-preview-document .tech-notes {
+    margin-top: 12px;
+    padding: 10px;
+  }
+
+  .mobile-preview-document .tech-notes-title {
+    font-size: 8px;
+  }
+
+  .mobile-preview-document .tech-notes-content {
+    font-size: 10px;
+  }
+
+  /* Watermark */
+  .mobile-preview-document .tech-watermark {
+    width: 150px;
+    height: 150px;
+  }
+
+  /* Footer de la ficha */
+  .mobile-preview-document .tech-sheet-footer {
+    padding: 10px 16px;
+  }
+
+  .mobile-preview-document .tech-footer-brand {
+    font-size: 7px;
+  }
+
+  .mobile-preview-document .tech-footer-logo {
+    height: 12px;
+  }
+}
+
+/* ========================================
+   4. Responsive - Solo activo en móvil
+   ======================================== */
+@media (max-width: 767px) {
+  /* Ocultar el botón PDF del footer del form (usaremos el FAB) */
+  .form-footer .btn-primary {
+    display: none;
+  }
+}
+
+/* En desktop (≥768px) los estilos móviles no aplican */
+@media (min-width: 768px) {
+  .mobile-container,
+  .mobile-fab-container,
+  .mobile-fab-backdrop,
+  .mobile-preview-modal {
+    display: none !important;
+  }
+}
