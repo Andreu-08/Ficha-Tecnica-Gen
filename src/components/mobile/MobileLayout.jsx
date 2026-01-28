@@ -49,15 +49,16 @@ export function MobileLayout({
         onImprimir={onImprimir}
       />
       
-      {/* Slot para FAB, modals y otros componentes móviles */}
-      {children}
-
-      {/* TechSheet oculto - Solo visible al imprimir (idéntico a desktop) */}
+      {/* TechSheet oculto - SOLO visible durante impresión */}
       <div className="mobile-print-sheet">
         <TechSheet receta={receta} />
       </div>
+
+      {/* Slot para FAB, modals y otros componentes móviles */}
+      {children}
     </main>
   )
 }
 
 export default MobileLayout
+

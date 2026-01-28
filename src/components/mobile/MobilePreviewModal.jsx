@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react'
-import { ArrowLeft, Download } from 'lucide-react'
+import { ArrowLeft, Share2 } from 'lucide-react'
 import { TechSheet } from '../recipe-preview/TechSheet'
 import { handlePrint } from '../../utils/print'
 
@@ -53,12 +53,10 @@ export function MobilePreviewModal({
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
 
-  // Manejar descarga - usa window.print() igual que desktop
-  const handleDownload = useCallback(() => {
-    handlePrint(receta)
-  }, [receta])
-
-
+  // Manejar compartir - abre diálogo de impresión
+  const handleShare = useCallback(() => {
+    handlePrint()
+  }, [])
 
   return (
     <div
@@ -82,13 +80,13 @@ export function MobilePreviewModal({
         
         <h2 className="mobile-preview-title">Vista Previa</h2>
         
-        {/* Botón descargar en header */}
+        {/* Botón compartir en header */}
         <button
           className="mobile-preview-share"
-          onClick={handleDownload}
-          aria-label="Descargar PDF"
+          onClick={handleShare}
+          aria-label="Compartir ficha técnica"
         >
-          <Download size={20} strokeWidth={2} />
+          <Share2 size={20} strokeWidth={2} />
         </button>
       </header>
 
@@ -105,3 +103,4 @@ export function MobilePreviewModal({
 }
 
 export default MobilePreviewModal
+

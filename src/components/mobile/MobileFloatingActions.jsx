@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { Plus, Eye, Download, X } from 'lucide-react'
+import { Plus, Eye, X, Share2 } from 'lucide-react'
 import { handlePrint } from '../../utils/print'
 
 /**
@@ -8,19 +8,16 @@ import { handlePrint } from '../../utils/print'
  * 
  * Acciones:
  * - Vista Previa: abre modal con el documento
- * - Compartir: usa Web Share API para guardar/compartir
+ * - Compartir: genera PDF y lo comparte via Web Share API
  * 
  * @component
  * @param {Object} props - Propiedades del componente
  * @param {Function} props.onPreview - Callback para abrir vista previa
  * @param {Object} props.receta - Datos de la receta para compartir
  */
-export function MobileFloatingActions({
-  onPreview,
-  receta
-}) {
+export function MobileFloatingActions({ receta, onPreview }) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const containerRef = useRef(null)
+  const fabRef = useRef(null)
 
   // Toggle del menú
   const toggleExpanded = useCallback(() => {
@@ -30,7 +27,7 @@ export function MobileFloatingActions({
   // Cerrar al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
+      if (fabRef.current && !fabRef.current.contains(event.target)) {
         setIsExpanded(false)
       }
     }
@@ -64,13 +61,11 @@ export function MobileFloatingActions({
     onPreview?.()
   }, [onPreview])
 
-  // Manejador de descarga - usa window.print() igual que desktop
-  const handleDownload = useCallback(() => {
+  // Manejador de compartir - abre diálogo de impresión
+  const handleShare = useCallback(() => {
     setIsExpanded(false)
-    handlePrint(receta)
-  }, [receta])
-
-
+    handlePrint()
+  }, [])
 
   return (
     <>
@@ -84,7 +79,7 @@ export function MobileFloatingActions({
       {/* Contenedor del FAB */}
       <div 
         className="mobile-fab-container" 
-        ref={containerRef}
+        ref={fabRef}
         role="group"
         aria-label="Acciones de la ficha técnica"
       >
@@ -106,17 +101,18 @@ export function MobileFloatingActions({
             <span className="mobile-fab-action-label">Vista Previa</span>
           </button>
 
-          {/* Acción: Descargar PDF */}
+          {/* Acción: Compartir PDF */}
           <button
-            className="mobile-fab-action mobile-fab-action-share"
-            onClick={handleDownload}
-            tabIndex={isExpanded ? 0 : -1}
-            aria-label="Descargar PDF"
+            className="mobile-fab-action"
+            onClick={handleShare}
+            aria-label="Compartir PDF"
           >
             <span className="mobile-fab-action-icon">
-              <Download size={18} strokeWidth={2} />
+              <Share2 size={18} strokeWidth={2} />
             </span>
-            <span className="mobile-fab-action-label">Descargar</span>
+            <span className="mobile-fab-action-label">
+              Compartir
+            </span>
           </button>
         </div>
 
@@ -142,3 +138,4 @@ export function MobileFloatingActions({
 }
 
 export default MobileFloatingActions
+

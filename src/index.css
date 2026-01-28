@@ -655,6 +655,12 @@ button:focus-visible {
     border: 1px solid var(--mokka-mist);
     border-radius: var(--radius-sm);
     color: var(--mokka-charcoal);
+    line-height: 1;
+  }
+
+  .tech-allergen-chip-full svg {
+    flex-shrink: 0;
+    vertical-align: middle;
   }
 
   .tech-allergen-none {
