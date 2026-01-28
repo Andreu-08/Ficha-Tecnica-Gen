@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { Plus, Eye, Share2, X } from 'lucide-react'
+import { Plus, Eye, Download, X } from 'lucide-react'
+import { handlePrint } from '../../utils/print'
 
 /**
  * MobileFloatingActions - Speed Dial FAB para acciones móviles.
@@ -63,25 +64,13 @@ export function MobileFloatingActions({
     onPreview?.()
   }, [onPreview])
 
-  // Manejador de compartir usando Web Share API
-  const handleShare = useCallback(async () => {
+  // Manejador de descarga - usa window.print() igual que desktop
+  const handleDownload = useCallback(() => {
     setIsExpanded(false)
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Ficha Técnica: ${receta?.titulo || 'Receta'}`,
-          text: 'Ficha técnica culinaria generada con Mokka Ficha Gen',
-        })
-      } catch (error) {
-        // Usuario canceló o error - silenciar
-        console.log('Share cancelled or failed:', error)
-      }
-    }
+    handlePrint(receta)
   }, [receta])
 
-  // Detectar soporte de Web Share API
-  const canShare = typeof navigator !== 'undefined' && !!navigator.share
+
 
   return (
     <>
@@ -117,20 +106,18 @@ export function MobileFloatingActions({
             <span className="mobile-fab-action-label">Vista Previa</span>
           </button>
 
-          {/* Acción: Compartir (si está disponible) */}
-          {canShare && (
-            <button
-              className="mobile-fab-action mobile-fab-action-share"
-              onClick={handleShare}
-              tabIndex={isExpanded ? 0 : -1}
-              aria-label="Compartir o guardar ficha técnica"
-            >
-              <span className="mobile-fab-action-icon">
-                <Share2 size={18} strokeWidth={2} />
-              </span>
-              <span className="mobile-fab-action-label">Compartir</span>
-            </button>
-          )}
+          {/* Acción: Descargar PDF */}
+          <button
+            className="mobile-fab-action mobile-fab-action-share"
+            onClick={handleDownload}
+            tabIndex={isExpanded ? 0 : -1}
+            aria-label="Descargar PDF"
+          >
+            <span className="mobile-fab-action-icon">
+              <Download size={18} strokeWidth={2} />
+            </span>
+            <span className="mobile-fab-action-label">Descargar</span>
+          </button>
         </div>
 
         {/* FAB Principal */}

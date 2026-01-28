@@ -1,4 +1,5 @@
 import { RecipeForm } from '../RecipeForm'
+import { TechSheet } from '../recipe-preview/TechSheet'
 
 /**
  * MobileLayout - Layout contenedor para modo móvil.
@@ -50,6 +51,11 @@ export function MobileLayout({
       
       {/* Slot para FAB, modals y otros componentes móviles */}
       {children}
+
+      {/* TechSheet oculto - Solo visible al imprimir (idéntico a desktop) */}
+      <div className="mobile-print-sheet">
+        <TechSheet receta={receta} />
+      </div>
     </main>
   )
 }

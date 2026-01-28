@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react'
-import { ArrowLeft, Share2 } from 'lucide-react'
+import { ArrowLeft, Download } from 'lucide-react'
 import { TechSheet } from '../recipe-preview/TechSheet'
+import { handlePrint } from '../../utils/print'
 
 /**
  * MobilePreviewModal - Modal fullscreen para vista previa del PDF en móvil.
@@ -52,23 +53,12 @@ export function MobilePreviewModal({
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
 
-  // Manejar compartir usando Web Share API
-  const handleShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Ficha Técnica: ${receta?.titulo || 'Receta'}`,
-          text: 'Ficha técnica culinaria generada con Mokka Ficha Gen',
-        })
-      } catch (error) {
-        // Usuario canceló o error - silenciar
-        console.log('Share cancelled or failed:', error)
-      }
-    }
+  // Manejar descarga - usa window.print() igual que desktop
+  const handleDownload = useCallback(() => {
+    handlePrint(receta)
   }, [receta])
 
-  // Detectar soporte de Web Share API
-  const canShare = typeof navigator !== 'undefined' && !!navigator.share
+
 
   return (
     <div
@@ -92,16 +82,14 @@ export function MobilePreviewModal({
         
         <h2 className="mobile-preview-title">Vista Previa</h2>
         
-        {/* Botón compartir en header */}
-        {canShare && (
-          <button
-            className="mobile-preview-share"
-            onClick={handleShare}
-            aria-label="Compartir ficha técnica"
-          >
-            <Share2 size={20} strokeWidth={2} />
-          </button>
-        )}
+        {/* Botón descargar en header */}
+        <button
+          className="mobile-preview-share"
+          onClick={handleDownload}
+          aria-label="Descargar PDF"
+        >
+          <Download size={20} strokeWidth={2} />
+        </button>
       </header>
 
       {/* Contenido - Solo el documento A4 */}
